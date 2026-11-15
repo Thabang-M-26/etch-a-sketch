@@ -2,6 +2,7 @@
   --primary-dark: #333;
   --primary-light: #ededed;
   --secondary-light: #fefefe;
+  --grid-line: #e0e0e0;
 }
 
 *,
@@ -49,6 +50,20 @@ h1 {
   gap: 100px;
   max-width: 1100px;
   margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  width: 500px;
+  height: 500px;
+  gap: 1px;
+  background-color: var(--grid-line);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.grid-element {
+  background-color: var(--secondary-light);
+  user-select: none;
 }
 
 /* FOOTER */
