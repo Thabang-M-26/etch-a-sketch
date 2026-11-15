@@ -3,23 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Etch-a-Sketch</title>
+    <title>Sketchpad</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="shortcut icon" href="favicon.ico" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="header">
-      <h1 class="title">Etch-a-Sketch</h1>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <h1 class="title">Sketchpad</h1>
+      </div>
     </header>
 
-    <main class="main">
-      <div id="grid" class="grid"></div>
+    <main class="workspace">
+      <aside class="panel">
+        <section class="panel-block">
+          <p class="panel-label">Color</p>
+          <div class="color-swatch-wrap">
+            <input
+              id="colorPicker"
+              class="color-picker"
+              type="color"
+              value="#3a3a3a"
+              aria-label="Pick a drawing color"
+            />
+          </div>
+        </section>
+
+        <section class="panel-block">
+          <p class="panel-label">Mode</p>
+          <div class="mode-switcher" role="group" aria-label="Drawing mode">
+            <button id="colorBtn" class="mode-btn active">Color</button>
+            <button id="rainbowBtn" class="mode-btn">Rainbow</button>
+            <button id="eraserBtn" class="mode-btn">Eraser</button>
+            <span class="mode-indicator" aria-hidden="true"></span>
+          </div>
+        </section>
+      </aside>
+
+      <section class="canvas-area">
+        <div class="canvas-frame">
+          <div id="grid" class="grid"></div>
+        </div>
+      </section>
     </main>
 
     <footer class="footer">

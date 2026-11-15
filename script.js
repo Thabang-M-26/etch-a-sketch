@@ -1,7 +1,35 @@
+const DEFAULT_COLOR = '#3a3a3a';
+const DEFAULT_MODE = 'color';
 const DEFAULT_SIZE = 16;
 
-const yearSpan = document.getElementById('year');
+let currentColor = DEFAULT_COLOR;
+let currentMode = DEFAULT_MODE;
+let currentSize = DEFAULT_SIZE;
+let mouseDown = false;
+
+const colorPicker = document.getElementById('colorPicker');
+const colorBtn = document.getElementById('colorBtn');
+const rainbowBtn = document.getElementById('rainbowBtn');
+const eraserBtn = document.getElementById('eraserBtn');
 const grid = document.getElementById('grid');
+const yearSpan = document.getElementById('year');
+
+colorPicker.oninput = (e) => setCurrentColor(e.target.value);
+colorBtn.onclick = () => setCurrentMode('color');
+rainbowBtn.onclick = () => setCurrentMode('rainbow');
+eraserBtn.onclick = () => setCurrentMode('eraser');
+
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
+
+function setCurrentColor(newColor) {
+  currentColor = newColor;
+}
+
+function setCurrentMode(newMode) {
+  activateButton(newMode);
+  currentMode = newMode;
+}
 
 function setupGrid(size) {
   grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
@@ -10,11 +38,38 @@ function setupGrid(size) {
   for (let i = 0; i < size * size; i++) {
     const cell = document.createElement('div');
     cell.classList.add('grid-element');
+    cell.addEventListener('mouseover', changeColor);
+    cell.addEventListener('mousedown', changeColor);
     grid.appendChild(cell);
   }
 }
 
+function changeColor(e) {
+  if (e.type === 'mouseover' && !mouseDown) return;
+  if (currentMode === 'rainbow') {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    e.target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+  } else if (currentMode === 'color') {
+    e.target.style.backgroundColor = currentColor;
+  } else if (currentMode === 'eraser') {
+    e.target.style.backgroundColor = '';
+  }
+}
+
+function activateButton(newMode) {
+  colorBtn.classList.remove('active');
+  rainbowBtn.classList.remove('active');
+  eraserBtn.classList.remove('active');
+
+  if (newMode === 'color') colorBtn.classList.add('active');
+  if (newMode === 'rainbow') rainbowBtn.classList.add('active');
+  if (newMode === 'eraser') eraserBtn.classList.add('active');
+}
+
 window.onload = () => {
   setupGrid(DEFAULT_SIZE);
+  activateButton(DEFAULT_MODE);
   yearSpan.textContent = new Date().getFullYear();
 };
