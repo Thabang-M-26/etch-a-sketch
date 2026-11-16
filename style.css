@@ -223,6 +223,7 @@ input {
   border-radius: 10px;
   overflow: hidden;
   cursor: crosshair;
+  touch-action: none;
 }
 
 .grid-element {

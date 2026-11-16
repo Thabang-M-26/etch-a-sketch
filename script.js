@@ -5,7 +5,7 @@ const DEFAULT_SIZE = 16;
 let currentColor = DEFAULT_COLOR;
 let currentMode = DEFAULT_MODE;
 let currentSize = DEFAULT_SIZE;
-let mouseDown = false;
+let isDrawing = false;
 
 const colorPicker = document.getElementById('colorPicker');
 const colorBtn = document.getElementById('colorBtn');
@@ -25,8 +25,29 @@ clearBtn.onclick = () => reloadGrid();
 sizeSlider.oninput = (e) => updateSizeValue(e.target.value);
 sizeSlider.onchange = (e) => changeSize(e.target.value);
 
-document.body.onmousedown = () => (mouseDown = true);
-document.body.onmouseup = () => (mouseDown = false);
+document.addEventListener('pointerdown', (e) => {
+  if (!grid.contains(e.target)) return;
+  isDrawing = true;
+  if (e.target.classList.contains('grid-element')) {
+    colorCell(e.target);
+  }
+});
+
+document.addEventListener('pointerup', () => {
+  isDrawing = false;
+});
+
+document.addEventListener('pointercancel', () => {
+  isDrawing = false;
+});
+
+document.addEventListener('pointermove', (e) => {
+  if (!isDrawing) return;
+  const cell = document.elementFromPoint(e.clientX, e.clientY);
+  if (cell && cell.classList.contains('grid-element')) {
+    colorCell(cell);
+  }
+});
 
 function setCurrentColor(newColor) {
   currentColor = newColor;
@@ -63,23 +84,20 @@ function setupGrid(size) {
   for (let i = 0; i < size * size; i++) {
     const cell = document.createElement('div');
     cell.classList.add('grid-element');
-    cell.addEventListener('mouseover', changeColor);
-    cell.addEventListener('mousedown', changeColor);
     grid.appendChild(cell);
   }
 }
 
-function changeColor(e) {
-  if (e.type === 'mouseover' && !mouseDown) return;
+function colorCell(cell) {
   if (currentMode === 'rainbow') {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
-    e.target.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    cell.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
   } else if (currentMode === 'color') {
-    e.target.style.backgroundColor = currentColor;
+    cell.style.backgroundColor = currentColor;
   } else if (currentMode === 'eraser') {
-    e.target.style.backgroundColor = '';
+    cell.style.backgroundColor = '';
   }
 }
 
