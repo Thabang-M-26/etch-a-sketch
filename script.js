@@ -11,6 +11,9 @@ const colorPicker = document.getElementById('colorPicker');
 const colorBtn = document.getElementById('colorBtn');
 const rainbowBtn = document.getElementById('rainbowBtn');
 const eraserBtn = document.getElementById('eraserBtn');
+const clearBtn = document.getElementById('clearBtn');
+const sizeValue = document.getElementById('sizeValue');
+const sizeSlider = document.getElementById('sizeSlider');
 const grid = document.getElementById('grid');
 const yearSpan = document.getElementById('year');
 
@@ -18,6 +21,9 @@ colorPicker.oninput = (e) => setCurrentColor(e.target.value);
 colorBtn.onclick = () => setCurrentMode('color');
 rainbowBtn.onclick = () => setCurrentMode('rainbow');
 eraserBtn.onclick = () => setCurrentMode('eraser');
+clearBtn.onclick = () => reloadGrid();
+sizeSlider.oninput = (e) => updateSizeValue(e.target.value);
+sizeSlider.onchange = (e) => changeSize(e.target.value);
 
 document.body.onmousedown = () => (mouseDown = true);
 document.body.onmouseup = () => (mouseDown = false);
@@ -29,6 +35,25 @@ function setCurrentColor(newColor) {
 function setCurrentMode(newMode) {
   activateButton(newMode);
   currentMode = newMode;
+}
+
+function setCurrentSize(newSize) {
+  currentSize = newSize;
+}
+
+function updateSizeValue(value) {
+  sizeValue.innerHTML = `${value}×${value}`;
+}
+
+function changeSize(value) {
+  setCurrentSize(value);
+  updateSizeValue(value);
+  reloadGrid();
+}
+
+function reloadGrid() {
+  grid.innerHTML = '';
+  setupGrid(currentSize);
 }
 
 function setupGrid(size) {
@@ -71,5 +96,6 @@ function activateButton(newMode) {
 window.onload = () => {
   setupGrid(DEFAULT_SIZE);
   activateButton(DEFAULT_MODE);
+  updateSizeValue(DEFAULT_SIZE);
   yearSpan.textContent = new Date().getFullYear();
 };
