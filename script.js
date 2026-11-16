@@ -6,12 +6,15 @@ let currentColor = DEFAULT_COLOR;
 let currentMode = DEFAULT_MODE;
 let currentSize = DEFAULT_SIZE;
 let isDrawing = false;
+let showGridLines = true;
 
 const colorPicker = document.getElementById('colorPicker');
 const colorBtn = document.getElementById('colorBtn');
 const rainbowBtn = document.getElementById('rainbowBtn');
 const eraserBtn = document.getElementById('eraserBtn');
 const clearBtn = document.getElementById('clearBtn');
+const gridLinesBtn = document.getElementById('gridLinesBtn');
+const themeBtn = document.getElementById('themeBtn');
 const sizeValue = document.getElementById('sizeValue');
 const sizeSlider = document.getElementById('sizeSlider');
 const grid = document.getElementById('grid');
@@ -22,6 +25,8 @@ colorBtn.onclick = () => setCurrentMode('color');
 rainbowBtn.onclick = () => setCurrentMode('rainbow');
 eraserBtn.onclick = () => setCurrentMode('eraser');
 clearBtn.onclick = () => reloadGrid();
+gridLinesBtn.onclick = () => toggleGridLines();
+themeBtn.onclick = () => toggleTheme();
 sizeSlider.oninput = (e) => updateSizeValue(e.target.value);
 sizeSlider.onchange = (e) => changeSize(e.target.value);
 
@@ -109,6 +114,21 @@ function activateButton(newMode) {
   if (newMode === 'color') colorBtn.classList.add('active');
   if (newMode === 'rainbow') rainbowBtn.classList.add('active');
   if (newMode === 'eraser') eraserBtn.classList.add('active');
+}
+
+function toggleGridLines() {
+  showGridLines = !showGridLines;
+  grid.classList.toggle('no-lines', !showGridLines);
+  gridLinesBtn.setAttribute(
+    'aria-label',
+    showGridLines ? 'Hide grid lines' : 'Show grid lines'
+  );
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  themeBtn.textContent = isDark ? '☀️' : '🌙';
 }
 
 window.onload = () => {

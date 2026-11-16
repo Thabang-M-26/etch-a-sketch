@@ -7,6 +7,10 @@
   --line: #d8cfc2;
   --cell-empty: #fbf7ee;
 
+  /* background glows */
+  --glow-top: rgba(255, 255, 255, 0.7);
+  --glow-bottom: rgba(217, 111, 75, 0.06);
+
   --shadow-out:
     6px 6px 14px rgba(160, 145, 125, 0.35),
     -6px -6px 14px rgba(255, 255, 255, 0.85);
@@ -31,8 +35,8 @@ html {
 body {
   background-color: var(--paper);
   background-image:
-    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.7), transparent 45%),
-    radial-gradient(circle at 90% 90%, rgba(217, 111, 75, 0.06), transparent 40%);
+    radial-gradient(circle at 20% 10%, var(--glow-top), transparent 45%),
+    radial-gradient(circle at 90% 90%, var(--glow-bottom), transparent 40%);
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   line-height: 1.6;
@@ -58,8 +62,8 @@ input {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 32px 24px 12px;
+  justify-content: space-between;
+  padding: 32px 32px 12px;
 }
 
 .brand {
@@ -93,6 +97,45 @@ input {
   margin-top: 4px;
   background: var(--accent);
   border-radius: 2px;
+}
+
+.topbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 12px;
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-out);
+  font-size: 16px;
+  transition: transform 0.15s ease;
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-in);
+}
+
+.icon-grid {
+  width: 14px;
+  height: 14px;
+  background-image:
+    linear-gradient(var(--ink) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--ink) 1.5px, transparent 1.5px);
+  background-size: 7px 7px;
+  background-position: -1px -1px;
+  opacity: 0.75;
 }
 
 /* WORKSPACE */
@@ -381,4 +424,33 @@ input {
     width: 88vw;
     height: 88vw;
   }
+}
+
+body.dark {
+  --paper: #1e1b17;
+  --paper-raised: #2a2620;
+  --ink: #f1ebdf;
+  --ink-soft: #a89d8e;
+  --accent: #f0a06b;
+  --line: #3a352e;
+  --cell-empty: #241f1a;
+
+  /* warm, subtle glows instead of the white blob */
+  --glow-top: rgba(240, 160, 107, 0.05);
+  --glow-bottom: rgba(240, 160, 107, 0.04);
+
+  --shadow-out:
+    6px 6px 14px rgba(0, 0, 0, 0.5),
+    -6px -6px 14px rgba(255, 255, 255, 0.03);
+  --shadow-in:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.04);
+}
+
+.grid.no-lines .grid-element {
+  box-shadow: none;
+}
+
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
